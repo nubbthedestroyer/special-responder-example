@@ -17,7 +17,7 @@ This is a tool that can be used to build, test, and deploy a Lambda function
 
 ## Getting Started
 
-### Requirements
+#### Requirements
 
 This tool requires the following pre-requisites:
 
@@ -27,9 +27,28 @@ This tool requires the following pre-requisites:
 1. Git CLI
 1. An AWS Account with the credential chain initialized.
     1. for more info, see this: https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html
-1. An S3 Bucket (must already be created, keep the name of the bucket)
+1. An S3 Bucket
+    1. Doesn't have to already exist but the name specified must be unique.
+    1. This tool will create the bucket for you if it doesn't already exist.
 
-### Build fixtures
+### The Easy Way
+
+If you feel like skipping the below steps and doing it the easy way, feel free to run this:
+
+```bash
+# EXAMPLE: ./up.sh my_bucket v0.0.5
+./up.sh <my_s3_bucket_name> <my_version>
+```
+
+To destroy and cleanup your environment, simply run:
+
+```bash
+./down.sh
+```
+
+### The Hard Way ( A.K.A = But I want to know how it works! )
+
+#### Build fixtures
 
 This tool uses docker-compose to make some of the standup orchestration simpler and easier.  
 To get started, clone this repo and run a compose build, like this:
@@ -40,7 +59,7 @@ git clone https://github.com/stelligent/miniproject-LUCAS-MICHAEL.git .
 docker-compose build
 ```
 
-### Run Tests
+#### Run Tests
 
 Like my grandma used to say: If you're not unit testing, it's broken.
 
@@ -56,7 +75,7 @@ This uses python's built in "unittest" library to run a few basic tests, includi
 * Testing the logic that allows the injection of a custom message.
 * Asserting that the timestamp is epoch to the second without milliseconds.
 
-### Inital Setup
+#### Inital Setup
 
 As stated in the pre-requisites, an S3 bucket is needed to store the codebase.  Let's copy 
 the env.sh.template to env.sh and make some changes.  
@@ -87,7 +106,7 @@ terraform can access them through docker-compose's environment variables integra
 source env.sh
 ```
 
-### Upload your code
+#### Upload your code
 
 There is a nice little fixture to simplify uploading the lambda code to s3.
 
@@ -100,7 +119,7 @@ either in "env.sh" or by statically writing it into "deployment/main.tf".
 docker-compose run upload v0.0.1
 ```
 
-### Deploy your stack to AWS
+#### Deploy your stack to AWS
 
 This tool uses terraform to provision the necessary AWS resources to run the stack.  This includes the 
 following resources:
@@ -120,7 +139,7 @@ docker-compose run deploy
 Terraform should return an output for each "module" stanza in "deployment/main.tf".  Each of these outputs, 
 should the odds be ever in our favor, will be a functional endpoint returning the desired output.
 
-### OPTIONALLY: Run any terraform command
+#### OPTIONALLY: Run any terraform command
 
 You can also optionally run ANY terraform command with docker-compose like so:
 
@@ -129,19 +148,6 @@ docker-compose run terraform destroy
 ```
 
 ### In Conclusion
-
-Here's a quick little recap:
-
-```bash
-mkdir special-responder && cd special-responder
-git clone https://github.com/stelligent/miniproject-LUCAS-MICHAEL.git .
-sed 's/<s3_bucket_placeholder>/your-s3-bucket-name/g' > env.sh 
-source env.sh 
-docker-compose build
-docker-compose run tests
-docker-compose run upload
-docker-compose run deploy
-```
 
 I hope you had fun reviewing my fun little thingamajiger.  Feel free to drop any questions or improvements as 
 issues to the repo!
