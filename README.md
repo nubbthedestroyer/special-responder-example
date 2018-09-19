@@ -4,7 +4,7 @@
 ## Introduction
 
 This is a tool that can be used to build, test, and deploy a Lambda function
- behind an API Gateway in Amazon Web Services that returns a specific response.  This case:
+ behind an API Gateway in Amazon Web Services that returns a specific response.  In this case:
  
 ```json
 {
