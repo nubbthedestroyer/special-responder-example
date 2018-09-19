@@ -6,6 +6,8 @@
 module "responder-prod" {
   source = "lambda-stack/"
 
+  aws_region = "${var.aws_region}"
+
   # Arbitrary environment tag
   environment = "prod"
 
@@ -20,6 +22,8 @@ module "responder-prod" {
 
 module "responder-stage" {
   source = "lambda-stack/"
+
+  aws_region = "${var.aws_region}"
 
   environment = "stage"
 
@@ -41,4 +45,8 @@ variable "s3_bucket" {}
 
 variable "function_version" {
   default = "v0.0.1"
+}
+
+variable "aws_region" {
+  default = "us-east-1"
 }

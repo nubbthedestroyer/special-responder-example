@@ -21,7 +21,7 @@ resource "aws_lambda_function" "example" {
 # IAM role which dictates what other AWS services the Lambda function
 # may access.
 resource "aws_iam_role" "lambda_exec" {
-  name_prefix = "${var.function_name}-${var.environment}-lambdaexec"
+  name_prefix = "${var.function_name}-${var.environment}-lambdaexec-"
 
   assume_role_policy = <<EOF
 {
