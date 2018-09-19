@@ -19,7 +19,9 @@ This is a tool that can be used to build, test, and deploy a Lambda function
 
 This tool requires the following pre-requisites:
 
-1. Docker and Docker-Compose
+1. Linux, Mac, or Compatible bash-enabled OS
+1. Docker
+1. Docker-Compose
 1. Git CLI
 1. An AWS Account with the credential chain initialized.
     1. for more info, see this: https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html
@@ -72,8 +74,12 @@ bucket exists first.
 
 Then you can optionally change the version number.
 
+```bash
+export TF_VAR_function_version="v0.0.10"
+```
+
 Once that is complete you can source the env to load your AWS credentials to the environment so 
-terraform can access them through Dockers environment.
+terraform can access them through docker-compose's environment variables integration.
 
 ```bash
 source env.sh
@@ -81,7 +87,7 @@ source env.sh
 
 ### Upload your code
 
-There is a nice little fixture to simplify uploading the lambda code to s3.  This is used as the s3 key.
+There is a nice little fixture to simplify uploading the lambda code to s3.
 
 ```bash
 docker-compose run upload
