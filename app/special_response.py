@@ -1,5 +1,5 @@
 import time
-
+import json
 
 class specialResponse(object):
 
@@ -14,16 +14,22 @@ class specialResponse(object):
 
     def message(self, message):
         if self.given_message == '':
-            returned_message = 'Its alive!!!'
+            returned_message = 'Automation for the People!'
         else:
             returned_message = self.given_message
 
         return returned_message
 
     def compose_json(self):
-        response_raw = {
+
+        body = {
             "message": self.this_message,
             "timestamp": self.timestamp()
         }
+
+        response_raw = {
+                "statusCode": 200,
+                "body": json.dumps(body)
+            }
 
         return response_raw

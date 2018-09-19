@@ -1,4 +1,11 @@
 import unittest
+import json
+
+import os,sys,inspect
+currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+parentdir = os.path.dirname(currentdir)
+sys.path.insert(0,parentdir)
+
 from special_response import specialResponse
 
 
@@ -14,14 +21,14 @@ class TestOutputs(unittest.TestCase):
         resp2 = specialResponse()
         resp3 = specialResponse(custom_message_text)
 
-        self.assertEqual(resp2.response_json['message'], 'Its alive!!!',
+        self.assertEqual(json.loads(resp2.response_json['body'])['message'], 'Automation for the People',
                          'Custom message logic returned an unexpected value when no custom message given')
-        self.assertEqual(resp3.response_json['message'], custom_message_text,
+        self.assertEqual(json.loads(resp3.response_json['body'])['message'], custom_message_text,
                          'Custom message logic did not return the expected and supplied value.')
 
     def test_timestamp_no_milliseconds(self):
         resp = specialResponse()
-        self.assertNotIn('.', str(resp.response_json['timestamp']),
+        self.assertNotIn('.', str(json.loads(resp.response_json['body'])['timestamp']),
                          'Timestamp being returned includes a period, indicating its includes milliseconds.')
 
 
