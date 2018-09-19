@@ -14,7 +14,7 @@ class specialResponse(object):
 
     def message(self, message):
         if self.given_message == '':
-            returned_message = 'Automation for the People!'
+            returned_message = 'Automation for the People'
         else:
             returned_message = self.given_message
 

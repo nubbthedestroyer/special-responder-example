@@ -4,7 +4,7 @@
 ## Introduction
 
 This is a tool that can be used to build, test, and deploy a Lambda function
- behind an API Gateway in aws that returns a specific response.  This case:
+ behind an API Gateway in Amazon Web Services that returns a specific response.  This case:
  
 ```json
 {
@@ -54,7 +54,13 @@ This uses python's built in "unittest" library to run a few basic tests, includi
 
 ### Inital Setup
 
-As stated in the pre-requisites, an S3 bucket is needed to store the codebase.  
+As stated in the pre-requisites, an S3 bucket is needed to store the codebase.  Let's copy 
+the env.sh.template to env.sh and make some changes.  
+
+```bash
+cp env.sh.template env.sh
+```
+
 Put the name of the S3 bucket in "env.sh" at the line with the following:
 
 ```bash
@@ -115,6 +121,19 @@ docker-compose run terraform destroy
 ```
 
 ### In Conclusion
+
+Here's a quick little recap:
+
+```bash
+mkdir special-responder && cd special-responder
+git clone https://github.com/stelligent/miniproject-LUCAS-MICHAEL.git .
+sed 's/<s3_bucket_placeholder>/your-s3-bucket-name/g' > env.sh 
+source env.sh 
+docker-compose build
+docker-compose run tests
+docker-compose run upload
+docker-compose run deploy
+```
 
 I hope you had fun reviewing my fun little thingamajiger.  Feel free to drop any questions or improvements as 
 issues to the repo!
