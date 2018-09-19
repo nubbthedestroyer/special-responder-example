@@ -3,11 +3,11 @@ provider "aws" {
 }
 
 resource "aws_lambda_function" "example" {
-  function_name = "${var.function_name}"
+  function_name = "${var.function_name}-${var.environment}"
 
   # The bucket name as created earlier with "aws s3api create-bucket"
   s3_bucket = "${var.s3_bucket}"
-  s3_key    = "${var.s3_key}"
+  s3_key    = "${var.function_version}/${var.package_name}"
 
   # "main" is the filename within the zip file (main.js) and "handler"
   # is the name of the property under which the handler function was
@@ -21,7 +21,7 @@ resource "aws_lambda_function" "example" {
 # IAM role which dictates what other AWS services the Lambda function
 # may access.
 resource "aws_iam_role" "lambda_exec" {
-  name_prefix = "${var.function_name}_"
+  name_prefix = "${var.function_name}-${var.environment}-lambdaexec"
 
   assume_role_policy = <<EOF
 {
@@ -38,6 +38,11 @@ resource "aws_iam_role" "lambda_exec" {
   ]
 }
 EOF
+}
+
+resource "aws_iam_role_policy_attachment" "lambda-attach-cwlogs" {
+  role      = "${aws_iam_role.lambda_exec.name}"
+  policy_arn = "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess"
 }
 
 resource "aws_api_gateway_rest_api" "example" {
@@ -92,13 +97,13 @@ resource "aws_api_gateway_deployment" "example" {
   ]
 
   rest_api_id = "${aws_api_gateway_rest_api.example.id}"
-  stage_name  = "test"
+  stage_name  = "${var.environment}"
 }
 
 resource "aws_lambda_permission" "apigw" {
-  statement_id  = "AllowAPIGatewayInvoke"
+  statement_id_prefix  = "AllowAPIGatewayInvoke-${var.function_name}-${var.environment}-"
   action        = "lambda:InvokeFunction"
-  function_name = "${aws_lambda_function.example.arn}"
+  function_name = "${aws_lambda_function.example.function_name}"
   principal     = "apigateway.amazonaws.com"
 
   # The /*/* portion grants access from any method on any resource

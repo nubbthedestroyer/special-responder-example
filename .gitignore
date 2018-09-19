@@ -1,2 +1,5 @@
 .idea
 venv
+deployment/.terraform
+deployment/terraform.tfstate*
+package.zip
