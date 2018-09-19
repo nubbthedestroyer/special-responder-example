@@ -2,7 +2,7 @@
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 
-if aws s3 ls "s3://lambda-deploy-test-20180918" 2>&1 | grep -q 'NoSuchBucket'; then
+if aws s3 ls "${TF_VAR_s3_bucket}" 2>&1 | grep -q 'NoSuchBucket'; then
     echo "Oooo!  Sorry, this bucket doesn't exist yet.  Let me try to create it for you."
     aws s3api create-bucket --bucket "${TF_VAR_s3_bucket}"
 else
