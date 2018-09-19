@@ -88,15 +88,17 @@ Put the name of the S3 bucket in "env.sh" at the line with the following:
 
 ```bash
 export S3_BUCKET_NAME="<bucket_name>"
+# EXAMPLE: export S3_BUCKET_NAME="my-bucket"
 ```
 
 This will actually create the bucket if it doesn't exist, but its better to make sure that the 
 bucket exists first.
 
-Then you can optionally change the version number.
+Then you can set the version number.
 
 ```bash
-export TF_VAR_function_version="v0.0.10"
+export TF_VAR_function_version="<version>"
+# EXAMPLE: export TF_VAR_function_version="v0.0.1"
 ```
 
 Once that is complete you can source the env to load your AWS credentials to the environment so 
