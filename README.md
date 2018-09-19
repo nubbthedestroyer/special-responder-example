@@ -54,7 +54,13 @@ This uses python's built in "unittest" library to run a few basic tests, includi
 
 ### Inital Setup
 
-As stated in the pre-requisites, an S3 bucket is needed to store the codebase.  
+As stated in the pre-requisites, an S3 bucket is needed to store the codebase.  Let's copy 
+the env.sh.template to env.sh and make some changes.  
+
+```bash
+cp env.sh.template env.sh
+```
+
 Put the name of the S3 bucket in "env.sh" at the line with the following:
 
 ```bash
@@ -127,7 +133,6 @@ docker-compose build
 docker-compose run tests
 docker-compose run upload
 docker-compose run deploy
-
 ```
 
 I hope you had fun reviewing my fun little thingamajiger.  Feel free to drop any questions or improvements as 
