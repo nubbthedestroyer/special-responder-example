@@ -13,7 +13,7 @@ module "responder-prod" {
   function_name = "responder"
 
   # Arbitrary function version (must have already deployed a package to the appropriate
-  function_version = "v0.0.4"
+  function_version = "${var.function_version}"
 
   s3_bucket = "${var.s3_bucket}"
 }
