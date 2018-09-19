@@ -1,6 +1,8 @@
 # Special Responder
 ##### A fancy little thingamajiger to launch a API Gateway / Lambda function in AWS.
 
+![arch](docs/aws-arch.png)
+
 ## Introduction
 
 This is a tool that can be used to build, test, and deploy a Lambda function
