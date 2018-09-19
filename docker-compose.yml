@@ -1,0 +1,70 @@
+version: '3'
+
+services:
+  test:
+    build: .
+    working_dir: /testmount
+    image: mastercontainer
+    command: python3 /testmount/app/tests/unit_tests.py
+    volumes:
+      - .:/testmount
+    environment:
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+      - TF_VAR_s3_bucket
+      - TF_VAR_function_version
+
+  bash:
+    build: .
+    working_dir: /testmount
+    image: mastercontainer
+    volumes:
+      - .:/testmount
+    environment:
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+      - TF_VAR_s3_bucket
+      - TF_VAR_function_version
+
+  terraform:
+    working_dir: /testmount/deployment
+    image: mastercontainer
+    build: .
+    entrypoint: terraform
+    volumes:
+      - .:/testmount
+    environment:
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+      - TF_VAR_s3_bucket
+      - TF_VAR_function_version
+
+  upload:
+    working_dir: /testmount/
+    image: mastercontainer
+    build: .
+    entrypoint: ./deployment/upload.sh
+    volumes:
+      - .:/testmount
+    environment:
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+      - TF_VAR_s3_bucket
+      - TF_VAR_function_version
+
+  deploy:
+    working_dir: /testmount/deployment
+    image: mastercontainer
+    build: .
+    command: >
+      bash -c "
+      terraform init
+      && terraform validate
+      && terraform apply -auto-approve"
+    volumes:
+      - .:/testmount
+    environment:
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+      - TF_VAR_s3_bucket
+      - TF_VAR_function_version
