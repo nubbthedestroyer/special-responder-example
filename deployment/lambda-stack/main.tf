@@ -2,24 +2,19 @@ provider "aws" {
   region = "${var.aws_region}"
 }
 
-resource "aws_lambda_function" "example" {
+resource "aws_lambda_function" "main" {
   function_name = "${var.function_name}-${var.environment}"
 
-  # The bucket name as created earlier with "aws s3api create-bucket"
   s3_bucket = "${var.s3_bucket}"
   s3_key    = "${var.function_version}/${var.package_name}"
 
-  # "main" is the filename within the zip file (main.js) and "handler"
-  # is the name of the property under which the handler function was
-  # exported in that file.
   handler = "${var.handler}"
   runtime = "${var.runtime}"
 
   role = "${aws_iam_role.lambda_exec.arn}"
 }
 
-# IAM role which dictates what other AWS services the Lambda function
-# may access.
+# IAM role which dictates what other AWS services the Lambda function may access
 resource "aws_iam_role" "lambda_exec" {
   name_prefix = "${var.function_name}-${var.environment}-lambdaexec-"
 
@@ -70,7 +65,7 @@ resource "aws_api_gateway_integration" "lambda" {
 
   integration_http_method = "POST"
   type                    = "AWS_PROXY"
-  uri                     = "${aws_lambda_function.example.invoke_arn}"
+  uri                     = "${aws_lambda_function.main.invoke_arn}"
 }
 
 resource "aws_api_gateway_method" "proxy_root" {
@@ -87,10 +82,10 @@ resource "aws_api_gateway_integration" "lambda_root" {
 
   integration_http_method = "POST"
   type                    = "AWS_PROXY"
-  uri                     = "${aws_lambda_function.example.invoke_arn}"
+  uri                     = "${aws_lambda_function.main.invoke_arn}"
 }
 
-resource "aws_api_gateway_deployment" "example" {
+resource "aws_api_gateway_deployment" "api-gateway-deployment" {
   depends_on = [
     "aws_api_gateway_integration.lambda",
     "aws_api_gateway_integration.lambda_root",
@@ -103,14 +98,14 @@ resource "aws_api_gateway_deployment" "example" {
 resource "aws_lambda_permission" "apigw" {
   statement_id_prefix  = "AllowAPIGatewayInvoke-${var.function_name}-${var.environment}-"
   action        = "lambda:InvokeFunction"
-  function_name = "${aws_lambda_function.example.function_name}"
+  function_name = "${aws_lambda_function.main.function_name}"
   principal     = "apigateway.amazonaws.com"
 
   # The /*/* portion grants access from any method on any resource
   # within the API Gateway "REST API".
-  source_arn = "${aws_api_gateway_deployment.example.execution_arn}/*/*"
+  source_arn = "${aws_api_gateway_deployment.api-gateway-deployment.execution_arn}/*/*"
 }
 
 output "base_url" {
-  value = "${aws_api_gateway_deployment.example.invoke_url}"
+  value = "${aws_api_gateway_deployment.api-gateway-deployment.invoke_url}"
 }

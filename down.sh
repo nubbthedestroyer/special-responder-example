@@ -22,9 +22,5 @@ fi
 
 set -e
 
-cat env.sh.template | sed \
-    -e "s/<s3_bucket_placeholder>/${1}/g" \
-    -e "s/<version_placeholder>/${2}/g" \
-    > env.sh
 source env.sh
 docker-compose run terraform destroy -auto-approve

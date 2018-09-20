@@ -13,6 +13,7 @@ services:
       - AWS_SECRET_ACCESS_KEY
       - TF_VAR_s3_bucket
       - TF_VAR_function_version
+      - TF_VAR_aws_region
 
   bash:
     build: .
@@ -25,6 +26,7 @@ services:
       - AWS_SECRET_ACCESS_KEY
       - TF_VAR_s3_bucket
       - TF_VAR_function_version
+      - TF_VAR_aws_region
 
   terraform:
     working_dir: /testmount/deployment
@@ -38,6 +40,7 @@ services:
       - AWS_SECRET_ACCESS_KEY
       - TF_VAR_s3_bucket
       - TF_VAR_function_version
+      - TF_VAR_aws_region
 
   upload:
     working_dir: /testmount/
@@ -51,6 +54,7 @@ services:
       - AWS_SECRET_ACCESS_KEY
       - TF_VAR_s3_bucket
       - TF_VAR_function_version
+      - TF_VAR_aws_region
 
   deploy:
     working_dir: /testmount/deployment
@@ -68,3 +72,4 @@ services:
       - AWS_SECRET_ACCESS_KEY
       - TF_VAR_s3_bucket
       - TF_VAR_function_version
+      - TF_VAR_aws_region

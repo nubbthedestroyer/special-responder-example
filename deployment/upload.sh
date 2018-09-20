@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
 
+set -e
+
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 
 if aws s3 ls "${TF_VAR_s3_bucket}" 2>&1 | grep -q 'NoSuchBucket'; then
     echo "Oooo!  Sorry, this bucket doesn't exist yet.  Let me try to create it for you."
-    aws s3api create-bucket --bucket "${TF_VAR_s3_bucket}"
+    aws s3 mb "s3://${TF_VAR_s3_bucket}" --region "${TF_VAR_aws_region}"
 else
     echo "GOOD!!!  Bucket exists already."
 fi
