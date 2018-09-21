@@ -151,7 +151,7 @@ docker-compose run terraform destroy
 
 ### UML for Deployment logic
 
-![arch](docs/infra-uml.png)
+![uml](docs/infra-uml.png)
 
 ### In Conclusion
 
