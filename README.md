@@ -149,6 +149,10 @@ You can also optionally run ANY terraform command with docker-compose like so:
 docker-compose run terraform destroy
 ```
 
+### UML for Deployment logic
+
+![arch](docs/infrastructure-uml.png)
+
 ### In Conclusion
 
 I hope you had fun reviewing my fun little thingamajiger.  Feel free to drop any questions or improvements as 
