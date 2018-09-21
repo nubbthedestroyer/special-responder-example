@@ -49,10 +49,11 @@ end
 
 up -> dc: run deploy
 dc -> tf: build infra, reference package.zip in s3
+tf -> aws: deployment logic
 alt terraform apply failed:
-   terraform -> user: exit 1 (with errors)
+   tf -> user: exit 1 (with errors)
 else terraform apply successful:
-   terraform -> user: URL Endpoints
+   tf -> user: URL Endpoints
 end
 
 note over user: COMPLETE:\nUser can now access the application at the supplied URLs
