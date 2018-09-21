@@ -11,9 +11,24 @@ else
     echo "GOOD!!!  Bucket exists already."
 fi
 
+
 cd ${DIR}/../app
-zip -r ../package.zip *
-cd ${DIR}
+
+rm -rf ../package
+mkdir ../package
+cp -r * ../package
+cd ../package
+
+ls -lah
+
+pip install -r requirements.txt -t ./
+
+zip -r ${DIR}/../package.zip *
+
+cd ..
+rm -rf package
+
+cd ${DIR}/..
 
 # Establish version number for this deploy
 
@@ -23,5 +38,5 @@ else
     this_version="${1}"
 fi
 
-aws s3 cp ../package.zip s3://${TF_VAR_s3_bucket}/${this_version}/package.zip && \
-rm -rf ../package.zip
+aws s3 cp --region "${TF_VAR_aws_region}" package.zip s3://${TF_VAR_s3_bucket}/${this_version}/package.zip && \
+rm -rf package.zip

@@ -12,4 +12,4 @@ RUN mv terraform /usr/bin
 
 ADD . .
 
-RUN pip3 install -r requirements.txt
+RUN pip3 install -r app/requirements.txt

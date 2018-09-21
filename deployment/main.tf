@@ -1,7 +1,11 @@
-# Terraform HCL referencing a sub-module to duplicate environments.
-# each of the "module" stanzas represents an independent API Gateway / Lambda stack.
-# As you can see in the examples below, this can be used to create separate stages.
-# copy or remove the "module" stanzas to you liking to add / remove environments.
+
+#####################################################################################
+### Terraform HCL referencing a sub-module to duplicate environments.
+### each of the "module" stanzas represents an independent API Gateway / Lambda stack.
+### As you can see in the examples below, this can be used to create separate stages.
+### copy or remove the "module" stanzas to you liking to add / remove environments.
+######################################################################################
+
 
 module "responder-prod" {
   source = "lambda-stack/"
@@ -33,6 +37,10 @@ module "responder-stage" {
   s3_bucket = "${var.s3_bucket}"
 }
 
+###################################################
+### OUTPUTS #######################################
+###################################################
+
 output "production_base_url" {
   value = "${module.responder-prod.base_url}"
 }
@@ -40,6 +48,10 @@ output "production_base_url" {
 output "stage_base_url" {
   value = "${module.responder-stage.base_url}"
 }
+
+###################################################
+### Variables #####################################
+###################################################
 
 variable "s3_bucket" {}
 
