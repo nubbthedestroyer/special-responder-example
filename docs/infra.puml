@@ -1,45 +1,53 @@
 @startuml
+
+'skinParam participant {
+'    BackgroundColor purple
+'    BorderColor black
+'}
+
 participant user as "DevOps Engineer"
 participant up as "up.sh"
 participant dc as "Docker Compose"
-participant ut as "Python Unit_Test Library"
+participant ut as "Python \nUnit_Test \nLibrary"
 participant upload as "upload.sh"
 participant tf as "Terraform"
 participant aws as "AWS API"
+
+
 
 user -> up: s3_bucket\nfunction_version
 alt input validation passes
    up -> dc: build containers
 else input validate fails
-   up -> user: inputs invalid or missing
+   up -> user: inputs invalid\n or missing
 end
 
-note over dc: docker-compose.yaml\nbuilds containers for testing, terraform, and deploy
+note over dc: docker-compose.yaml\nbuilds containers for testing,\nterraform, and deploy
 dc -> up: build confirmation
-alt build fail:
-   dc -> user: dev env build failed, exit 1
-else build success:
-   dc -> up: build completed, continue
+alt build fail
+   dc -> user: dev env build failed, \nexit 1
+else build success
+   dc -> up: build completed, \ncontinue
 end
 
-up -> dc: run test
-dc -> ut: python ./app/tests/unit_tests.py
-note over dc: runs test suite in app/tests/unit_tests.py using docker
+up -> dc: docker-compose\nrun test
+dc -> ut: unit_tests.py
+note over dc: runs test suite in \napp/tests/unit_tests.py\nusing docker
 
-alt test fail:
+alt test fail
     ut -> user: tests failed (with results)
 else test pass
     ut -> up: tests passed (continue)
 end
 
-up -> dc: run ./deployment/upload.sh
+up -> dc: docker-compose \nrun upload
 dc -> upload
 
 alt s3 bucket doesn't exist:
     upload -> aws: create bucket
 end
 
-upload -> aws: package.zip (to versioned path)
+upload -> aws: package.zip \n(to versioned path)
 
 alt upload failed:
     upload -> user: exit 1 (with errors)
@@ -48,7 +56,7 @@ else upload success:
 end
 
 up -> dc: run deploy
-dc -> tf: build infra, reference package.zip in s3
+dc -> tf: build infra, \nreference package.zip in s3
 tf -> aws: deployment logic
 alt terraform apply failed:
    tf -> user: exit 1 (with errors)
@@ -56,6 +64,6 @@ else terraform apply successful:
    tf -> user: URL Endpoints
 end
 
-note over user: COMPLETE:\nUser can now access the application at the supplied URLs
+note over user: COMPLETE:\nUser can now access \nthe application at the supplied URLs
 
 @enduml
