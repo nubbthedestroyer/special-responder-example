@@ -4,3 +4,4 @@ deployment/.terraform
 deployment/terraform.tfstate*
 package.zip
 env.sh
+run.log
