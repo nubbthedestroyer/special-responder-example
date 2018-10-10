@@ -21,7 +21,7 @@ cd ../package
 
 ls -lah
 
-pip install -r requirements.txt -t ./
+#pip install -r requirements.txt -t ./
 
 zip -r ${DIR}/../package.zip *
 

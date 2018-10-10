@@ -24,7 +24,8 @@ class specialResponse(object):
 
         body = {
             "message": self.this_message,
-            "timestamp": self.timestamp()
+            "timestamp": self.timestamp(),
+            # "message2": "second message"
         }
 
         response_raw = {

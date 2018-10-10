@@ -76,11 +76,11 @@ source env.sh
 
 set -o pipefail
 
-docker-compose build | step "BUILDING CONTAINERS"
+#docker-compose build | step "BUILDING CONTAINERS"
 echo "=================TEST OUTPUT==================="
 docker-compose run test
 echo "=================TEST OUTPUT==================="
-docker-compose run test | step "RUNNING TESTS"
+#docker-compose run test | step "RUNNING TESTS"
 docker-compose run upload | step "UPLOADING CODEBASE"
 docker-compose run deploy | step "DEPLOYING CODE"
 

@@ -2,6 +2,8 @@ provider "aws" {
   region = "${var.aws_region}"
 }
 
+data "aws_caller_identity" "current" {}
+
 resource "aws_lambda_function" "main" {
   function_name = "${var.function_name}-${var.environment}"
 
@@ -96,14 +98,14 @@ resource "aws_api_gateway_deployment" "api-gateway-deployment" {
 }
 
 resource "aws_lambda_permission" "apigw" {
-  statement_id_prefix  = "AllowAPIGatewayInvoke-${var.function_name}-${var.environment}-"
+//  statement_id_prefix  = "AllowAPIGatewayInvoke-${var.function_name}-${var.environment}-"
   action        = "lambda:InvokeFunction"
   function_name = "${aws_lambda_function.main.function_name}"
   principal     = "apigateway.amazonaws.com"
 
   # The /*/* portion grants access from any method on any resource
   # within the API Gateway "REST API".
-  source_arn = "${aws_api_gateway_deployment.api-gateway-deployment.execution_arn}/*/*"
+  source_arn = "arn:aws:execute-api:${var.aws_region}:${data.aws_caller_identity.current.account_id}:${aws_api_gateway_rest_api.example.id}/*/*"
 }
 
 output "base_url" {
